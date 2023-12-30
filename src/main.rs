@@ -1,6 +1,13 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
+pub mod downloader;
+mod java_config;
+
 use eframe::egui;
+use poll_promise::Promise;
+use std::fs::File;
+use std::io::Write;
+use crate::java_config::JavaConfig;
 
 fn main() -> Result<(), eframe::Error> {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
@@ -30,7 +37,9 @@ struct MyApp {
     version: String,
     java_version: JavaVersions,
     max_ram_usage: u32,
-    initial_ram_usage: u32
+    initial_ram_usage: u32,
+
+    current_download: Option<Promise<()>>,
 }
 
 impl Default for MyApp {
@@ -39,7 +48,8 @@ impl Default for MyApp {
             version: "1.21.1".to_owned(),
             java_version: JavaVersions::V17,
             max_ram_usage: 2,
-            initial_ram_usage: 1
+            initial_ram_usage: 1,
+            current_download: None,
         }
     }
 }
@@ -61,11 +71,54 @@ impl eframe::App for MyApp {
                     ui.selectable_value(&mut self.java_version, JavaVersions::V17, "Java 17");
                 });
             ui.add(egui::Slider::new(&mut self.max_ram_usage, 1..=64).text("Max Ram Usage"));
-            if self.initial_ram_usage > self.max_ram_usage {self.initial_ram_usage = self.max_ram_usage}
-            ui.add(egui::Slider::new(&mut self.initial_ram_usage, 1..=64).text("Initial Ram Usage"));
-            if self.initial_ram_usage > self.max_ram_usage {self.max_ram_usage = self.initial_ram_usage}
-            ui.label(format!("MC Version '{}', Java Version {:?}", self.version, self.java_version));
+            if self.initial_ram_usage > self.max_ram_usage {
+                self.initial_ram_usage = self.max_ram_usage
+            }
+            ui.add(
+                egui::Slider::new(&mut self.initial_ram_usage, 1..=64).text("Initial Ram Usage"),
+            );
+            if self.initial_ram_usage > self.max_ram_usage {
+                self.max_ram_usage = self.initial_ram_usage
+            }
+            ui.label(format!(
+                "MC Version '{}', Java Version {:?}",
+                self.version, self.java_version
+            ));
 
+            let button_text = if self.current_download.is_some() {
+                "Downloading"
+            } else {
+                "Start"
+            };
+            println!("{}", self.current_download.is_some());
+            if ui.button(button_text).clicked() {
+                if self.current_download.is_none() {
+                    self.current_download = Some(Promise::spawn_thread("test", || {
+                        let resp = reqwest::blocking::get(
+                            "https://launcher.mojang.com/download/Minecraft.deb",
+                        )
+                        .expect("Failed to download file");
+
+                        let body = resp.bytes().expect("Failed to get body from request");
+
+                        let mut file =
+                            File::create("./Minecraft.deb").expect("Failed to create file");
+
+                        file.write(&body).expect("Failed to write bytes");
+
+                        let java = JavaConfig::parse("test.json");
+                        java.linux_aarch64.java8;
+                    }));
+                }
+            }
+
+            if let Some(promise) = &self.current_download {
+                if let Some(request) = promise.ready() {
+                    //DO_STH:
+
+                    self.current_download = None;
+                }
+            }
         });
     }
 }
