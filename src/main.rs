@@ -93,22 +93,8 @@ impl eframe::App for MyApp {
             println!("{}", self.current_download.is_some());
             if ui.button(button_text).clicked() {
                 if self.current_download.is_none() {
-                    self.current_download = Some(Promise::spawn_thread("test", || {
-                        let resp = reqwest::blocking::get(
-                            "https://launcher.mojang.com/download/Minecraft.deb",
-                        )
-                        .expect("Failed to download file");
-
-                        let body = resp.bytes().expect("Failed to get body from request");
-
-                        let mut file =
-                            File::create("./Minecraft.deb").expect("Failed to create file");
-
-                        file.write(&body).expect("Failed to write bytes");
-
-                        let java = JavaConfig::parse("test.json");
-                        java.linux_aarch64.java8;
-                    }));
+                    self.current_download = Some(Promise::spawn_thread("test", ||
+                        downloader::download("https://t4.ftcdn.net/jpg/03/12/22/85/240_F_312228503_9ueAdJkElxnoEC74av0zi4RNfMRKpujp.jpg", "pic")));
                 }
             }
 
