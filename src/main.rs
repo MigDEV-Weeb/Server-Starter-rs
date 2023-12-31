@@ -7,7 +7,7 @@ use eframe::egui;
 use poll_promise::Promise;
 use std::fs::File;
 use std::io::Write;
-use crate::java_config::JavaConfig;
+use crate::java_config::{JavaConfig, SelectedJavaVersion};
 
 fn main() -> Result<(), eframe::Error> {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
@@ -27,15 +27,9 @@ fn main() -> Result<(), eframe::Error> {
     )
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum JavaVersions {
-    V8,
-    V11,
-    V17,
-}
 struct MyApp {
     version: String,
-    java_version: JavaVersions,
+    java_version: SelectedJavaVersion,
     max_ram_usage: u32,
     initial_ram_usage: u32,
 
@@ -46,7 +40,7 @@ impl Default for MyApp {
     fn default() -> Self {
         Self {
             version: "1.21.1".to_owned(),
-            java_version: JavaVersions::V17,
+            java_version: SelectedJavaVersion::V17,
             max_ram_usage: 2,
             initial_ram_usage: 1,
             current_download: None,
@@ -66,9 +60,9 @@ impl eframe::App for MyApp {
             egui::ComboBox::from_label("Select one!")
                 .selected_text(format!("Java {:?}", self.java_version))
                 .show_ui(ui, |ui| {
-                    ui.selectable_value(&mut self.java_version, JavaVersions::V8, "Java 8");
-                    ui.selectable_value(&mut self.java_version, JavaVersions::V11, "Java 11");
-                    ui.selectable_value(&mut self.java_version, JavaVersions::V17, "Java 17");
+                    ui.selectable_value(&mut self.java_version, SelectedJavaVersion::V8, "Java 8");
+                    ui.selectable_value(&mut self.java_version, SelectedJavaVersion::V11, "Java 11");
+                    ui.selectable_value(&mut self.java_version, SelectedJavaVersion::V17, "Java 17");
                 });
             ui.add(egui::Slider::new(&mut self.max_ram_usage, 1..=64).text("Max Ram Usage"));
             if self.initial_ram_usage > self.max_ram_usage {
