@@ -10,6 +10,7 @@ use std::io::Write;
 use crate::java_config::{JavaConfig, SelectedJavaVersion};
 
 fn main() -> Result<(), eframe::Error> {
+    let java = JavaConfig::parse("Java_version.json");
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
     let options = eframe::NativeOptions {
         initial_window_size: Some(egui::vec2(320.0, 240.0)),
@@ -95,7 +96,6 @@ impl eframe::App for MyApp {
             if let Some(promise) = &self.current_download {
                 if let Some(request) = promise.ready() {
                     //DO_STH:
-
                     self.current_download = None;
                 }
             }

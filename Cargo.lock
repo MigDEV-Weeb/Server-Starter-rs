@@ -59,7 +59,7 @@ dependencies = [
  "accesskit_consumer",
  "async-channel",
  "atspi",
- "futures-lite 1.13.0",
+ "futures-lite",
  "serde",
  "zbus",
 ]
@@ -212,7 +212,7 @@ dependencies = [
  "async-task",
  "concurrent-queue",
  "fastrand 2.0.1",
- "futures-lite 1.13.0",
+ "futures-lite",
  "slab",
 ]
 
@@ -225,7 +225,7 @@ dependencies = [
  "async-lock",
  "autocfg",
  "blocking",
- "futures-lite 1.13.0",
+ "futures-lite",
 ]
 
 [[package]]
@@ -238,7 +238,7 @@ dependencies = [
  "autocfg",
  "cfg-if",
  "concurrent-queue",
- "futures-lite 1.13.0",
+ "futures-lite",
  "log",
  "parking",
  "polling",
@@ -269,7 +269,7 @@ dependencies = [
  "blocking",
  "cfg-if",
  "event-listener 3.0.0",
- "futures-lite 1.13.0",
+ "futures-lite",
  "rustix 0.38.21",
  "windows-sys 0.48.0",
 ]
@@ -336,7 +336,7 @@ dependencies = [
  "async-trait",
  "atspi-macros",
  "enumflags2",
- "futures-lite 1.13.0",
+ "futures-lite",
  "serde",
  "tracing",
  "zbus",
@@ -437,7 +437,7 @@ dependencies = [
  "async-task",
  "fastrand 2.0.1",
  "futures-io",
- "futures-lite 1.13.0",
+ "futures-lite",
  "piper",
  "tracing",
 ]
@@ -1070,19 +1070,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "futures-lite"
-version = "2.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aeee267a1883f7ebef3700f262d2d54de95dfaf38189015a74fdc4e0c7ad8143"
-dependencies = [
- "fastrand 2.0.1",
- "futures-core",
- "futures-io",
- "parking",
- "pin-project-lite",
-]
-
-[[package]]
 name = "futures-sink"
 version = "0.3.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1337,7 +1324,7 @@ dependencies = [
  "httpdate",
  "itoa",
  "pin-project-lite",
- "socket2 0.5.5",
+ "socket2 0.4.10",
  "tokio",
  "tower-service",
  "tracing",
@@ -2350,9 +2337,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.108"
+version = "1.0.109"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3d1c7e3eac408d115102c4c24ad393e0821bb3a5df4d506a80f85f7a742a526b"
+checksum = "cb0652c533506ad7a2e353cce269330d6afd8bdfb6d75e0ace5b35aacbd7b9e9"
 dependencies = [
  "itoa",
  "ryu",
@@ -2784,7 +2771,6 @@ dependencies = [
  "egui",
  "egui_extras",
  "env_logger",
- "futures-lite 2.1.0",
  "poll-promise",
  "rand",
  "reqwest",

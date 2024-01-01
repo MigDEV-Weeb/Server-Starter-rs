@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::Write;
+use std::io::{Read, Write};
 use std::path::Path;
 use crate::java_config::JavaConfig;
 
@@ -19,7 +19,5 @@ pub fn download(url: &str, path: &str) {
         File::create(format!("{}/{}", path, Path::new(url).file_name().unwrap().to_str().unwrap())).expect("Failed to create file");
 
     file.write(&body).expect("Failed to write bytes");
-
-    let java = JavaConfig::parse("JavaVersion.json");
 
 }
