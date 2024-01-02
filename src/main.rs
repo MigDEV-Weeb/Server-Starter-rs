@@ -1,18 +1,19 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
-pub mod downloader;
+pub mod download_helper;
 mod java_config;
 
 use eframe::egui;
 use poll_promise::Promise;
 use std::fs::File;
 use std::io::Write;
+use egui::{Vec2, ViewportBuilder};
 use crate::java_config::{JavaConfig, SelectedJavaVersion};
 
 fn main() -> Result<(), eframe::Error> {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
     let options = eframe::NativeOptions {
-        initial_window_size: Some(egui::vec2(320.0, 240.0)),
+        viewport: ViewportBuilder::default().with_inner_size(Vec2::new(280f32, 200f32)),
         ..Default::default()
     };
     eframe::run_native(
@@ -88,7 +89,7 @@ impl eframe::App for MyApp {
             if ui.button(button_text).clicked() {
                 if self.current_download.is_none() {
                     self.current_download = Some(Promise::spawn_thread("test", ||
-                        downloader::download("https://t4.ftcdn.net/jpg/03/12/22/85/240_F_312228503_9ueAdJkElxnoEC74av0zi4RNfMRKpujp.jpg", "pic")));
+                        download_helper::download("http://migdev.de/minecraft.zip", "zip")));
                 }
             }
 

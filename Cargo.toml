@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 rand = "0.8.5"
-eframe = "0.23.0"
-egui = "0.23.0"
+eframe = "0.24.1"
+egui = "0.24.1"
 env_logger = "0.10.0"
 egui_extras = "0.23.0"
