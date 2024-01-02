@@ -11,6 +11,7 @@ use egui::{Vec2, ViewportBuilder};
 use crate::java_config::{JavaConfig, SelectedJavaVersion};
 
 fn main() -> Result<(), eframe::Error> {
+    let java = JavaConfig::parse("Java_version.json");
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
     let options = eframe::NativeOptions {
         viewport: ViewportBuilder::default().with_inner_size(Vec2::new(280f32, 200f32)),
@@ -96,7 +97,6 @@ impl eframe::App for MyApp {
             if let Some(promise) = &self.current_download {
                 if let Some(request) = promise.ready() {
                     //DO_STH:
-
                     self.current_download = None;
                 }
             }
