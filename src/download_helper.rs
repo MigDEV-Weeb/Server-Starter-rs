@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{Cursor, Write};
 use std::path::{Path, PathBuf};
-use egui::TextBuffer;
+
 
 use crate::java_config::JavaConfig;
 
@@ -28,7 +28,7 @@ pub fn download(url: &str, path: &str) {
         extract(&*format!("{} {}", path, filename), path);
     }
 
-    let java = JavaConfig::parse("javaVersion.json");
+    let _java = JavaConfig::parse("java_version.json");
 }
 
 pub fn extract(path_to_file: &str, path_to_destination: &str) {
